@@ -1,0 +1,66 @@
+<%= form_for @food, :html => { :class => "form-horizontal food" } do |f| %>
+
+  <% if @food.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@food.errors.count, "error") %> prohibited this food from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @food.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :title, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:title) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :embedded_at, "Eingelagert am", :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :embedded_at, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:embedded_at) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :product_code, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :product_code, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:product_code) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :best_before, "Mindestens haltbar bis", :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :best_before, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:best_before) %>
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                foods_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>
+
+<% content_for :sidebar do %>
+  <% if @scan_qr_code.present? %>
+    <h3>Scan Food</h3>
+    <%= render partial: "qr_code", object: @scan_qr_code %>
+  <% end %>
+  <% if @edit_qr_code.present? %>
+    <h3>Edit Food</h3>
+    <%= render partial: "qr_code", object: @edit_qr_code %>
+  <% end %>
+<% end %>

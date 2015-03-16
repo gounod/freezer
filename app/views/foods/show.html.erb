@@ -1,0 +1,32 @@
+<%- model_class = Food -%>
+<div class="page-header">
+  <h1><%= @food.title %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong>Eingelagert am:</strong></dt>
+  <dd><%= l @food.embedded_at %></dd>
+  <dt><strong>Mindestens haltbar bis:</strong></dt>
+  <dd><%= l @food.best_before %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:product_code) %>:</strong></dt>
+  <dd><%= @food.product_code %></dd>
+
+</dl>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              foods_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_food_path(@food), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              food_path(@food),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+
+
+<% content_for :sidebar do %>
+  <h3>Scan Food</h3>
+  <%= render partial: "qr_code", object: @scan_qr_code %>
+  <h3>Edit Food</h3>
+  <%= render partial: "qr_code", object: @edit_qr_code %>
+<% end %>
