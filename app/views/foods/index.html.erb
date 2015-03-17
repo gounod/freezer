@@ -1,6 +1,10 @@
 <%- model_class = Food -%>
 <div class="page-header">
-  <h1>Im Kühlschrank ist:</h1>
+  <% if @location_name.present? %>
+    <h1>Im <%= @location_name %> ist :</h1>
+  <% else %>
+    <h1>Irgendwo im Kühlschrank ist:</h1>
+  <% end %>
 </div>
 <table class="table table-striped">
   <thead>
@@ -18,7 +22,7 @@
         <td><%= link_to food.title, edit_food_path(food) %></td>
         <td><%=l(food.embedded_at) if food.embedded_at.present? %></td>
         <td><%=l(food.best_before) if food.best_before.present? %></td>
-        <td><%= food.location %></td>
+        <td><%= food.location_name %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_food_path(food), :class => 'btn btn-default btn-xs' %>
@@ -36,7 +40,7 @@
       <% @locations.each do |loc,qrcode| %>
       <div class="col-md-5">
         <div class="thumbnail ">
-          <h3><%= loc %></h3>
+          <h3><%= Food::LOCATIONS[loc] %></h3>
           <%= render partial: "qr_code", object: qrcode %>
         </div>
       </div>
@@ -46,9 +50,6 @@
   </div>
 </div>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_food_path,
-            :class => 'btn btn-primary', confirm: "Sicher eine neue Tupperware erstellen?" %>
 
 <% content_for :sidebar do %>
   <% if @all_qr_code.present? %>

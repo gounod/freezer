@@ -46,7 +46,7 @@
   <div class="form-group">
     <%= f.label :location, "Ort", :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :location, :class => 'form-control' %>
+      <%= f.select :location, options_for_select(Food::LOCATIONS.map{|key,value| [value,key]}), :class => 'form-control', :include_blank => "- unbenutzt -" %>
     </div>
     <%=f.error_span(:location) %>
   </div>
@@ -62,12 +62,8 @@
 <% end %>
 
 <% content_for :sidebar do %>
-  <% if @scan_qr_code.present? %>
-    <h3>Scan Food</h3>
-    <%= render partial: "qr_code", object: @scan_qr_code %>
-  <% end %>
   <% if @edit_qr_code.present? %>
-    <h3>Edit Food</h3>
+    <h3>QR Code</h3>
     <%= render partial: "qr_code", object: @edit_qr_code %>
   <% end %>
 <% end %>

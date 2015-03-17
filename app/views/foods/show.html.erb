@@ -10,6 +10,8 @@
   <dd><%= l(@food.best_before) if @food.best_before.present? %></dd>
   <dt><strong><%= model_class.human_attribute_name(:product_code) %>:</strong></dt>
   <dd><%= @food.product_code %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:location) %>:</strong></dt>
+  <dd><%= @food.location_name %></dd>
 
 </dl>
 
@@ -20,8 +22,6 @@
 
 
 <% content_for :sidebar do %>
-  <h3>Scan Food</h3>
-  <%= render partial: "qr_code", object: @scan_qr_code %>
-  <h3>Edit Food</h3>
+  <h3>QR Code</h3>
   <%= render partial: "qr_code", object: @edit_qr_code %>
 <% end %>
