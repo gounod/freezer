@@ -5,6 +5,7 @@ class CreateFoods < ActiveRecord::Migration
       t.date :embedded_at
       t.string :product_code
       t.date :best_before
+      t.string :location
 
       t.timestamps null: false
     end

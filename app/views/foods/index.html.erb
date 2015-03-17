@@ -8,6 +8,7 @@
       <th><%= model_class.human_attribute_name(:title) %></th>
       <th>Eingelagert am</th>
       <th>Mindestens haltbar bis</th>
+      <th>Ort</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -15,22 +16,43 @@
     <% @foods.each do |food| %>
       <tr>
         <td><%= link_to food.title, edit_food_path(food) %></td>
-        <td><%=l food.embedded_at %></td>
-        <td><%=l food.best_before %></td>
+        <td><%=l(food.embedded_at) if food.embedded_at.present? %></td>
+        <td><%=l(food.best_before) if food.best_before.present? %></td>
+        <td><%= food.location %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_food_path(food), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      food_path(food),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-xs btn-danger' %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h3>Was ist in einem Ort:</h3>
+    <div class="row">
+    <% if @locations.any? %>
+      <% @locations.each do |loc,qrcode| %>
+      <div class="col-md-5">
+        <div class="thumbnail ">
+          <h3><%= loc %></h3>
+          <%= render partial: "qr_code", object: qrcode %>
+        </div>
+      </div>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+</div>
+
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_food_path,
-            :class => 'btn btn-primary' %>
+            :class => 'btn btn-primary', confirm: "Sicher eine neue Tupperware erstellen?" %>
+
+<% content_for :sidebar do %>
+  <% if @all_qr_code.present? %>
+    <h3>Übersicht</h3>
+    <%= render partial: "qr_code", object: @all_qr_code %>
+  <% end %>
+<% end %>

@@ -1,10 +1,20 @@
 class FoodsController < ApplicationController
   before_action :set_food, only: [:show, :edit, :update, :destroy]
+  before_action :get_base_qr_url, only: [:show, :edit, :update, :destroy, :index]
 
   # GET /foods
   # GET /foods.json
   def index
-    @foods = Food.all
+    if params[:loc]
+      @foods = Food.where(:location => params[:loc])
+    else
+      @foods = Food.all
+    end
+    @all_qr_code = RQRCode::QRCode.new( "#{@url_for_qr_code_base}", :size => 4, :level => :h )
+    @locations = {}
+    Food.pluck(:location).uniq.compact.each do |loc|
+      @locations[loc.downcase.parameterize] = RQRCode::QRCode.new( "#{@url_for_qr_code_base}/location/#{loc.downcase.parameterize}", :size => 5, :level => :h )
+    end
   end
 
   # GET /foods/1
@@ -65,15 +75,19 @@ class FoodsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_food
       @food = Food.find(params[:id])
-      host_port = "" 
-      host_port = ":3000" if request.port.to_i != 80
-      url_for_qr_code = "#{request.protocol}#{request.host}#{host_port}/foods/#{@food.id}"
+      url_for_qr_code = "#{@url_for_qr_code_base}/#{@food.id}"
       @scan_qr_code = RQRCode::QRCode.new( "#{url_for_qr_code}", :size => 4, :level => :h )
       @edit_qr_code = RQRCode::QRCode.new( "#{url_for_qr_code}/edit", :size => 4, :level => :h )
     end
 
+    def get_base_qr_url
+      host_port = "" 
+      host_port = ":3000" if request.port.to_i != 80
+      @url_for_qr_code_base = "#{request.protocol}#{request.host}#{host_port}/foods"
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def food_params
-      params.require(:food).permit(:title, :embedded_at, :product_code, :best_before)
+      params.require(:food).permit(:title, :embedded_at, :product_code, :best_before, :location)
     end
 end

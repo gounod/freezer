@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20150316200824) do
     t.date     "embedded_at"
     t.string   "product_code", limit: 255
     t.date     "best_before"
+    t.string   "location",     limit: 255
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
