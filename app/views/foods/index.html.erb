@@ -79,12 +79,12 @@
       <%= render partial: "qr_code", object: @all_qr_code %>
     <% end %>
   </div>
-  <div class="visible-xs">
-  <%= link_to("Übersicht", "/", :class => "btn btn-default") %><br>
-  <% if @locations.any? %>
-    <% @locations.each do |loc,qrcode| %>
-      <%= link_to Food::LOCATIONS[loc], foods_path(:loc => loc), :class => "btn btn-default" %><br>
+  <div class="visible-xs panel-body">
+    <%= link_to("Übersicht", "/", :class => "btn btn-default col-xs-12") %><br>
+    <% if @locations.any? %>
+      <% @locations.each do |loc,qrcode| %>
+        <%= link_to Food::LOCATIONS[loc], foods_path(:loc => loc), :class => "btn btn-default col-xs-12" %>
+      <% end %>
     <% end %>
-  <% end %>
 </div>
 <% end %>
