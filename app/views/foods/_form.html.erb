@@ -46,7 +46,7 @@
   <div class="form-group">
     <%= f.label :location, "Ort", :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :location, options_for_select(Food::LOCATIONS.map{|key,value| [value,key]}), :class => 'form-control', :include_blank => "- unbenutzt -" %>
+      <%= f.select :location, options_for_select(Food::LOCATIONS.map{|key,value| [value,key.to_s]}, @food.try(:location)), :class => 'form-control', :include_blank => "- unbenutzt -" %>
     </div>
     <%=f.error_span(:location) %>
   </div>
