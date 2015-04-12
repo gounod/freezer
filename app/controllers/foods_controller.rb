@@ -1,6 +1,6 @@
 class FoodsController < ApplicationController
-  before_action :set_food, only: [:show, :edit, :update, :destroy]
   before_action :get_base_qr_url, only: [:show, :edit, :update, :destroy, :index]
+  before_action :set_food, only: [:show, :edit, :update, :destroy]
   http_basic_authenticate_with name: 'freezer', password: 'freezer', only: [:create,:destroy]
 
   # GET /foods
