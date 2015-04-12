@@ -12,7 +12,7 @@ class FoodsController < ApplicationController
     else
       @foods = Food.all
     end
-    @all_qr_code = RQRCode::QRCode.new( "#{@url_for_qr_code_base}", :size => 5, :level => :h )
+    @all_qr_code = RQRCode::QRCode.new( "#{@url_for_qr_code_base}", :size => 6, :level => :h )
     @locations = {}
     Food::LOCATIONS.each do |key,value|
       @locations[key] = RQRCode::QRCode.new( "#{@url_for_qr_code_base}/location/#{key}", :size => 6, :level => :h )
@@ -78,7 +78,7 @@ class FoodsController < ApplicationController
     def set_food
       @food = Food.find(params[:id])
       url_for_qr_code = "#{@url_for_qr_code_base}/#{@food.id}"
-      @edit_qr_code = RQRCode::QRCode.new( "#{url_for_qr_code}/edit", :size => 5, :level => :h )
+      @edit_qr_code = RQRCode::QRCode.new( "#{url_for_qr_code}/edit", :size => 6, :level => :h )
     end
 
     def get_base_qr_url
