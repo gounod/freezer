@@ -1,29 +1,29 @@
 <%- model_class = Food -%>
 <div class="page-header">
   <% if @location_name.present? %>
-    <h1>Im <%= @location_name %> ist :</h1>
+    <h1><%= @location_name %>:</h1>
   <% else %>
-    <h1>Irgendwo im Kühlschrank ist:</h1>
+    <h1>Übersicht:</h1>
   <% end %>
 </div>
-<div class="table-responsive ">
+<div class="table-responsive hidden-xs">
   <table class="table table-striped">
     <thead>
       <tr>
         <th><%= model_class.human_attribute_name(:title) %></th>
-        <th>Eingelagert am</th>
-        <th>Mindestens haltbar bis</th>
         <th>Ort</th>
+        <th>MHD</th>
+        <th>Eingelagert am</th>
         <th><%=t '.actions', :default => t("helpers.actions") %></th>
       </tr>
     </thead>
     <tbody>
       <% @foods.each do |food| %>
         <tr>
-          <td><%= link_to food.title, edit_food_path(food) %></td>
-          <td><%=l(food.embedded_at) if food.embedded_at.present? %></td>
-          <td><%=l(food.best_before) if food.best_before.present? %></td>
+          <td><%= link_to(food.title, edit_food_path(food), :class => "btn btn-default") %></td>
           <td><%= food.location_name %></td>
+          <td><%=l(food.best_before) if food.best_before.present? %></td>
+          <td><%=l(food.embedded_at) if food.embedded_at.present? %></td>
           <td>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_food_path(food), :class => 'btn btn-default btn-xs' %>
@@ -32,6 +32,25 @@
       <% end %>
     </tbody>
   </table>
+</div>
+
+<div class="visible-xs">
+  <div class="list-group ">
+    <div class="list-group-item row active">
+      <div class="col-xs-4">Name</div>
+      <div class="col-xs-4">Ort</div>
+      <div class="col-xs-4">MHD</div>
+    </div>
+    <% @foods.each do |food| %>
+        <%= link_to(edit_food_path(food), :class => "list-group-item row") do %>
+          <div class="col-xs-4"><%= food.title %></div>
+          <div class="col-xs-4"><%= food.location_name %></div>
+          <div class="col-xs-4"><%= food.best_before %></div>
+        <% end %>
+      
+    <% end %>
+  </div>
+
 </div>
 
 <div class="panel panel-default hidden-xs">
