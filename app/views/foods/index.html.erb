@@ -6,33 +6,35 @@
     <h1>Irgendwo im Kühlschrank ist:</h1>
   <% end %>
 </div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:title) %></th>
-      <th>Eingelagert am</th>
-      <th>Mindestens haltbar bis</th>
-      <th>Ort</th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @foods.each do |food| %>
+<div class="table-responsive ">
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= link_to food.title, edit_food_path(food) %></td>
-        <td><%=l(food.embedded_at) if food.embedded_at.present? %></td>
-        <td><%=l(food.best_before) if food.best_before.present? %></td>
-        <td><%= food.location_name %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_food_path(food), :class => 'btn btn-default btn-xs' %>
-        </td>
+        <th><%= model_class.human_attribute_name(:title) %></th>
+        <th>Eingelagert am</th>
+        <th>Mindestens haltbar bis</th>
+        <th>Ort</th>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @foods.each do |food| %>
+        <tr>
+          <td><%= link_to food.title, edit_food_path(food) %></td>
+          <td><%=l(food.embedded_at) if food.embedded_at.present? %></td>
+          <td><%=l(food.best_before) if food.best_before.present? %></td>
+          <td><%= food.location_name %></td>
+          <td>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_food_path(food), :class => 'btn btn-default btn-xs' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-<div class="panel panel-default">
+<div class="panel panel-default hidden-xs">
   <div class="panel-body">
     <h3>Was ist in einem Ort:</h3>
     <div class="row">
@@ -40,7 +42,7 @@
       <% @locations.each do |loc,qrcode| %>
       <div class="col-md-5">
         <div class="thumbnail ">
-          <h3><%= Food::LOCATIONS[loc] %></h3>
+          <h3><%= link_to Food::LOCATIONS[loc], foods_path(:loc => loc), :class => "btn btn-default" %></h3>
           <%= render partial: "qr_code", object: qrcode %>
         </div>
       </div>
@@ -52,8 +54,18 @@
 
 
 <% content_for :sidebar do %>
-  <% if @all_qr_code.present? %>
-    <h3>Übersicht</h3>
-    <%= render partial: "qr_code", object: @all_qr_code %>
+  <div class="hidden-xs">
+    <% if @all_qr_code.present? %>
+      <h3><%= link_to("Übersicht", "/", :class => "btn btn-default") %></h3>
+      <%= render partial: "qr_code", object: @all_qr_code %>
+    <% end %>
+  </div>
+  <div class="visible-xs">
+  <%= link_to("Übersicht", "/", :class => "btn btn-default") %><br>
+  <% if @locations.any? %>
+    <% @locations.each do |loc,qrcode| %>
+      <%= link_to Food::LOCATIONS[loc], foods_path(:loc => loc), :class => "btn btn-default" %><br>
+    <% end %>
   <% end %>
+</div>
 <% end %>
