@@ -78,7 +78,7 @@ class FoodsController < ApplicationController
     def set_food
       @food = Food.find(params[:id])
       url_for_qr_code = "#{@url_for_qr_code_base}/#{@food.id}"
-      @edit_qr_code = RQRCode::QRCode.new( "#{url_for_qr_code}/edit", :size => 4, :level => :h )
+      @edit_qr_code = RQRCode::QRCode.new( "#{url_for_qr_code}/edit", :size => 5, :level => :h )
     end
 
     def get_base_qr_url
