@@ -6,7 +6,7 @@ class Food < ActiveRecord::Base
     if location.present?
       Food::LOCATIONS[location]
     else
-      ""
+      "- unbenutzt -"
     end
   end
 
