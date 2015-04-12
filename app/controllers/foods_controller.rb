@@ -15,7 +15,7 @@ class FoodsController < ApplicationController
     @all_qr_code = RQRCode::QRCode.new( "#{@url_for_qr_code_base}", :size => 5, :level => :h )
     @locations = {}
     Food::LOCATIONS.each do |key,value|
-      @locations[key] = RQRCode::QRCode.new( "#{@url_for_qr_code_base}/location/#{key}", :size => 5, :level => :h )
+      @locations[key] = RQRCode::QRCode.new( "#{@url_for_qr_code_base}/location/#{key}", :size => 6, :level => :h )
     end
   end
 
