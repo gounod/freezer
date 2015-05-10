@@ -50,6 +50,7 @@
           <ul class="nav navbar-nav">
             <li><%= link_to "Lebensmittel", "/foods"  %></li>
             <li><%= link_to "Neue Tupperware anlegen", new_food_path() %></li>
+            <li><%= link_to "Alle QR-Codes", all_qr_codes_foods_path() %></li>
           </ul>
         </div>
       </div>
@@ -57,11 +58,11 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
           <%= bootstrap_flash %>
           <%= yield %>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4">
           <div class="well sidebar-nav">
             <%= yield :sidebar %>
             <!-- <h3>Sidebar</h3>

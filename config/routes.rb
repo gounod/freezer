@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :foods do
     collection do
       get 'location/:loc' => "foods#index"
+      get 'qr_codes' => "foods#qr_codes", :as => :all_qr_codes
     end
   end
 

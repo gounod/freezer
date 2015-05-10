@@ -1,5 +1,5 @@
 class FoodsController < ApplicationController
-  before_action :get_base_qr_url, only: [:show, :edit, :update, :destroy, :index]
+  before_action :get_base_qr_url, only: [:show, :edit, :update, :destroy, :index, :qr_index]
   before_action :set_food, only: [:show, :edit, :update, :destroy]
   http_basic_authenticate_with name: 'freezer', password: 'freezer', only: [:create,:destroy]
 
@@ -12,6 +12,15 @@ class FoodsController < ApplicationController
     else
       @foods = Food.all
     end
+    @all_qr_code = RQRCode::QRCode.new( "#{@url_for_qr_code_base}", :size => 6, :level => :h )
+    @locations = {}
+    Food::LOCATIONS.each do |key,value|
+      @locations[key] = RQRCode::QRCode.new( "#{@url_for_qr_code_base}/location/#{key}", :size => 6, :level => :h )
+    end
+  end
+
+  def qr_codes
+    @foods = Food.all
     @all_qr_code = RQRCode::QRCode.new( "#{@url_for_qr_code_base}", :size => 6, :level => :h )
     @locations = {}
     Food::LOCATIONS.each do |key,value|
